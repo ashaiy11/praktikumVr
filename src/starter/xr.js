@@ -21,8 +21,8 @@ export async function enterVR(renderer) {
     sessionRequestPending = true;
     try {
         const session = await navigator.xr.requestSession('immersive-vr', {
-            requiredFeatures: ['local-floor']
-        });
+    optionalFeatures: ['local-floor']
+});
         await renderer.xr.setSession(session);
     } catch (error) {
         if (String(error?.message).includes('already an active')) {

@@ -24,13 +24,22 @@ function sampleHandMotion(controller, previousPosition, samples, delta) {
 }
 
 function isTargetedSwing(motion, game) {
-    // TODO (versi siswa): bedakan ayunan yang menuju target dari gerakan lain.
-    // Petunjuk: gunakan dot product arah ayunan dan arah target.
+    const swingDirection = motion.to.clone().sub(motion.from).normalize();
+    const targetDirection = game.target.position.clone().sub(motion.from).normalize();
 
+    return swingDirection.dot(targetDirection) > 0;
 }
 
 function distancePointToSegment(point, start, end) {
-    // TODO (versi siswa): cari jarak minimum titik terhadap garis segmen.
-    // Petunjuk: proyeksikan vektor ke segmen dan batasi parameter t ke 0..1.
+    const segment = end.clone().sub(start);
+    const segmentLengthSquared = segment.lengthSq();
+
+    if (segmentLengthSquared === 0) return point.distanceTo(start);
+
+    const projection = point.clone().sub(start).dot(segment) / segmentLengthSquared;
+    const boundedProjection = Math.max(0, Math.min(1, projection));
+    const closestPoint = start.clone().addScaledVector(segment, boundedProjection);
+
+    return point.distanceTo(closestPoint);
 }
 

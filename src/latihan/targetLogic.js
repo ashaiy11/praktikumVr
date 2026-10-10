@@ -1,6 +1,32 @@
 export function getDifficultySettings(game) {
-// TODO (versi siswa): pindahkan konfigurasi difficulty ke tabel agar mudah dibaca.
-// Petunjuk: EASY, NORMAL, HARD mengatur kecepatan pukulan dan orbit target.
+    const settings = {
+        EASY: {
+            orbitMin: 0.45,
+            orbitMax: 0.80,
+            directionChangeMin: 3.0,
+            directionChangeMax: 5.0,
+            minPunchSpeed: 0.85,
+            perfectSpeed: 1.50
+        },
+        NORMAL: {
+            orbitMin: 0.90,
+            orbitMax: 1.50,
+            directionChangeMin: 1.5,
+            directionChangeMax: 3.0,
+            minPunchSpeed: 1.20,
+            perfectSpeed: 2.00
+        },
+        HARD: {
+            orbitMin: 1.70,
+            orbitMax: 2.40,
+            directionChangeMin: 0.7,
+            directionChangeMax: 1.4,
+            minPunchSpeed: 1.60,
+            perfectSpeed: 2.50
+        }
+    };
+
+    return settings[game.difficulty] ?? settings.NORMAL;
 }
 
 export function moveTarget(delta, game) {
@@ -9,11 +35,9 @@ export function moveTarget(delta, game) {
 }
 
 function damp(current, target, smoothing, delta) {
-    // TODO (versi siswa): haluskan perubahan nilai tanpa bergantung pada FPS.
-    // Petunjuk: faktor peredam dapat dihitung dengan eksponen dan delta time.
+    return target + (current - target) * Math.exp(-smoothing * delta);
 }
 
 function randomBetween(min, max) {
-    // TODO (versi siswa): ambil angka acak dalam rentang yang diberikan.
-    // Petunjuk: min + Math.random() dikali selisih max dan min.
+    return min + Math.random() * (max - min);
 }
